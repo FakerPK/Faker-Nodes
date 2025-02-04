@@ -50,7 +50,7 @@ jobs:
 
       - name: Push Changes
         if: env.SKIP_TODAY != 'true'
-        uses: ad-m/github-push-action@v0.11.0
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
