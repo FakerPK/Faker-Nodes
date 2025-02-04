@@ -25,27 +25,33 @@ jobs:
       - name: Node Updates
         if: env.SKIP_TODAY != 'true'
         run: |
+          # Configure git identity
+          git config --global user.name "FakerPK"
+          git config --global user.email "faiqse7j@gmail.com"
+          
           # Random commits between 1-3 per run
           COMMITS=$(( (RANDOM % 3) + 1 ))
           
-          for ((i=1; i<=COMMITS; i++)); do
+          # Array of commit messages
+          MESSAGES=(
+            "Update node configuration"
+            "Adjust network parameters"
+            "Rotate node credentials"
+            "Patch security update"
+            "Optimize node performance"
+            "Refresh node cache"
+            "Fix node synchronization"
+          )
+          
+          for i in $(seq 1 $COMMITS); do
             # Random delay between commits (1-120 minutes)
-            sleep $(( RANDOM % 7200 ))s
+            sleep $(( RANDOM % 7200 ))
             
             # Generate realistic node data
             echo "NODE_$(date +%s)=$(shuf -i 100-999 -n 1)" >> nodes.dat
             
             git add nodes.dat
-            git -c user.name="Node Maintainer" -c user.email="nodes@domain.com" commit -m "$(shuf -n 1 <<EOF
-            Update node configuration
-            Adjust network parameters
-            Rotate node credentials
-            Patch security update
-            Optimize node performance
-            Refresh node cache
-            Fix node synchronization
-            EOF
-            )"
+            git commit -m "${MESSAGES[$((RANDOM % ${#MESSAGES[@]}))]}"
           done
 
       - name: Push Changes
